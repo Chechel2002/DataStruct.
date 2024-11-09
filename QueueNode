@@ -1,0 +1,157 @@
+import java.util.Scanner;
+
+class Node {
+    Object value;
+    Node next;
+
+    public Node(Object value) {
+        this.value = value;
+        next = null;
+    }
+}
+
+public class QueueNode {
+    Node first;
+    Node last;
+    int count;
+
+    public QueueNode() {
+        first = null;
+        last = null;
+        count = 0;
+    }
+
+    public boolean isEmpty() {
+        return first == null && last == null;
+    }
+
+    public boolean enqueue(Object value) {
+        Node newNode = new Node(value);
+        if(isEmpty()) {
+            first = newNode;
+            last = newNode;
+        } else {
+            last.next = newNode;
+            last = newNode;
+        }
+        count++;
+        return true;
+    }
+
+    public boolean dequeue() {
+        if (!isEmpty()) {
+            if (first == last) {
+                first = null;
+                last = null;
+            } else {
+                first = first.next;
+            }
+            count--;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Object getFirst() {
+        if (!isEmpty()) {
+            return first.value;
+        } else {
+            return null;
+        }
+    }
+
+    public Object getLast() {
+        if (!isEmpty()) {
+            return last.value;
+        } else {
+            return null;
+        }
+    }
+
+    // toString
+    public String toString() {
+        String result = "";
+        if (!isEmpty()) {
+            result += "first = [" + first.value + "]\n";
+            result += "last  = [" + last.value + "]\n";
+
+            Node temporary = first;
+            while (temporary != null) {
+                result += "[" + temporary.value + "]->";
+                temporary = temporary.next;
+            }
+            result += "\n";
+        }
+
+        return result;
+    }
+
+    public void display() {
+        if (!isEmpty()) {
+            Node temporary = first;
+            while (temporary != null) {
+                System.out.print("[" + temporary.value + "]->");
+                temporary = temporary.next;
+            }
+            System.out.println();
+        } else {
+            System.out.println("Queue is empty...");
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        QueueNode qn = new QueueNode();
+        int choice;
+        do {
+            System.out.println("Menu:");
+            System.out.println("1. Enqueue");
+            System.out.println("2. Dequeue");
+            System.out.println("3. Display Queue");
+            System.out.println("4. Get First Element");
+            System.out.println("5. Get Last Element");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter value to enqueue: ");
+                    Object value = scanner.next();
+                    qn.enqueue(value);
+                    break;
+
+                case 2:
+                    if (qn.dequeue()) {
+                        System.out.println("Dequeued an element from the queue.");
+                    } else {
+                        System.out.println("Unable to Dequeue, Queue is empty");
+                    }
+                    break;
+
+                case 3:
+                    qn.display();
+                    break;
+
+                case 4:
+                    System.out.println("First element: " + qn.getFirst());
+                    break;
+
+                case 5:
+                    System.out.println("Last element: " + qn.getLast());
+                    break;
+
+                case 6:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Try again.");
+                    break;
+            }
+            System.out.println();
+        } while (choice != 6);
+    }
+}
